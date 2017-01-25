@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+<form>
+<div>
+    Blue (Left)
+    <input type="text" id="blueName">
+    Score
+    <input type="number" min="0" max="9" value="0" id="blueScore">
+</div>
+
+<div>
+    Red (Right)
+    <input type="text" id="redName">
+    Score
+    <input type="number" min="0" max="9" value="0" id="redScore">
+</div>
+
+<div>
+    <input type="submit" value="Update">
+    <input type="button" value="Swap side" id="swap">
+</div>
+</form>
+
+<script src="https://cdn.jsdelivr.net/jquery/3.1.1/jquery.min.js"></script>
+<script>
+$('form').submit(function(e){
+    nodecg.sendMessage('update', {
+        blueName: $('#blueName').val(),
+        blueScore: $('#blueScore').val() || '0',
+        redName: $('#redName').val(),
+        redScore: $('#redScore').val() || '0',
+    });
+    e.preventDefault();
+});
+$('#swap').click(function(){
+    console.log('swapping');
+    var blueName = $('#blueName').val();
+    var blueScore = $('#blueScore').val();
+    $('#blueName').val($('#redName').val());
+    $('#blueScore').val($('#redScore').val());
+    $('#redName').val(blueName);
+    $('#redScore').val(blueScore);
+});
+</script>
+</body>
+</html>

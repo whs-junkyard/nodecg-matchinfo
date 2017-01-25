@@ -1,0 +1,111 @@
+<head>
+<style>
+body{
+    background-color: transparent;
+    color: white;
+    font-size: 18pt;
+    font-family: "Sukhumvit Set";
+}
+.team{
+    position: absolute;
+    top: 0;
+    width: 730px;
+    display: flex;
+    flex-direction: row;
+    text-shadow: black 0px 3px 0px;
+}
+#teamA{
+    left: 0;
+    text-align: right;
+}
+#teamB{
+    right: 0;
+}
+.teamName{
+    padding: 5px 25px 5px 25px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%);
+    height: 1.5em;
+    flex: 1;
+}
+.teamScore{
+    width: 47px;
+    height: 56px;
+    font-size: 22pt;
+    position: relative;
+    overflow: hidden;
+}
+.teamScore span{
+    position: absolute;
+    top: 0; left: 0;
+    display: block;
+    padding: 5px 15px 5px 15px;
+}
+#teamA .teamScore{
+    background: linear-gradient(to bottom, #7abcff 0%,#60abf8 44%,#4096ee 100%);
+}
+#teamB .teamScore{
+    background: linear-gradient(to bottom, #a90329 0%,#8f0222 44%,#6d0019 100%);
+}
+#blinker{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 1px;
+    height: 1px;
+    z-index: 5000;
+    background: rgba(255,255,255,0.5);
+    animation: 1s linear 0s infinite alternate blink;
+}
+@keyframes blink{
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+</style>
+</head>
+<div id="blinker"></div>
+<div class="team" id="teamA">
+    <div class="teamName"></div><div class="teamScore"><span>0</span></div>
+</div>
+<div class="team" id="teamB">
+    <div class="teamScore"><span>0</span></div><div class="teamName"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/jquery/3.1.1/jquery.min.js"></script>
+<script>
+function animatedText(element, text, length){
+    if(element.text() == text){
+        return;
+    }
+    element.text(text.substr(0, length));
+    if(length < text.length){
+        setTimeout(function(){
+            animatedText(element, text, length + 1);
+        }, 30);
+    }
+}
+function updateScore(element, score){
+    let old = element.find('span');
+
+    if(old.text() == score){
+        return;
+    }
+
+    old.animate({
+        top: '100%',
+    }, function(){
+        old.remove();
+    });
+    
+    $('<span>').text(score).css('top', '-100%').appendTo(element)
+        .animate({top: 0});
+}
+nodecg.listenFor('update', function(msg){
+    animatedText($('#teamA .teamName'), msg.blueName, 0);
+    updateScore($('#teamA .teamScore'), msg.blueScore);
+    animatedText($('#teamB .teamName'), msg.redName, 0);
+    updateScore($('#teamB .teamScore'), msg.redScore);
+});
+</script>

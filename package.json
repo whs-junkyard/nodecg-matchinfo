@@ -1,0 +1,21 @@
+{
+    "name": "match-info",
+    "nodecg": {
+        "compatibleRange": "~0.8.5",
+        "graphics": [
+            {
+                "file": "index.html",
+                "width": 1920,
+                "height": 1080
+            }
+        ],
+        "dashboardPanels": [
+            {
+                "name": "team-info",
+                "title": "Team Info",
+                "width": 4,
+                "file": "team-info.html"
+            }
+        ]
+    }
+}
